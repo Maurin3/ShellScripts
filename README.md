@@ -1,6 +1,6 @@
 # ShellScripts
 
-Some useful Shell Scripts ;)
+Some useful Shell Scripts :wink:
 
 Odoo's scripts are greatly inspired by [AVS's scripts](https://github.com/brinkflew/odoo-scripts)...
 
