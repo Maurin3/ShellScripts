@@ -60,8 +60,15 @@ if [[ $check_version -lt 11 ]]; then
 else
     port="--http-port $free_port"
 fi
-if [[ $addons ]]; then
-    $odoo_command --addons-path=$ODOO_PATH/odoo/addons,$ODOO_PATH/enterprise,$ODOO_PATH/design-themes,$addons $port -d $1 --db-filter=$1 $args
-else
-    $odoo_command --addons-path=$ODOO_PATH/odoo/addons,$ODOO_PATH/enterprise,$ODOO_PATH/design-themes $port -d $1 --db-filter=$1 $args
+
+addons_list="$ODOO_PATH/odoo/addons,$ODOO_PATH/enterprise,$ODOO_PATH/design-themes"
+
+if [[ -d $ODOO_PATH/odoo_utils ]]; then
+    addons_list="${addons_list},$ODOO_PATH/odoo_utils"
 fi
+
+if [[ $addons ]]; then
+    addons_list="${addons_list},$addons"
+fi
+
+$odoo_command --addons-path=$addons_list $port -d $1 --db-filter=$1 $args

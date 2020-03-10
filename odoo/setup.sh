@@ -11,11 +11,11 @@ aligned "For example, if your odoo-bin executable is located at '/home/user/git/
 aligned "located at '/home/user/git/enterprise/' and the answer to the next question should be '/home/user/git/'"
 
 path=`ask "Where are your Odoo directories located?"`
+correct_path="$path"
 [[ ! "$path" =~ .*/$ ]] && path="$path/"
 info   "Assuming the following locations:"
 aligned "Odoo Community:     ${path}odoo"
 aligned "Odoo Enterprise:    ${path}enterprise"
-aligned "Odoo Internal:      ${path}internal"
 aligned "Design Themes:      ${path}design-themes"
 
 if [[ `confirm "Is it correct?"` != true ]]; then
@@ -68,7 +68,7 @@ if [ -n `$SHELL -c 'echo $ZSH_VERSION'` ]; then
         if [ ! -z `tail -c 1 $HOME/.zshrc` ]; then
             sed -i.bak -e '$a\' $HOME/.zshrc
         fi
-        echo "export ODOO_PATH=$path" >> $HOME/.zshrc
+        echo "export ODOO_PATH=$correct_path" >> $HOME/.zshrc
         echo "export ODOO_SCRIPTS=$loc" >> $HOME/.zshrc
         source $HOME/.zshrc &>/dev/null
     else
@@ -80,7 +80,7 @@ elif [ -n `$SHELL -c 'echo $BASH_VERSION'` ]; then
         if [ ! -z `tail -c 1 $HOME/.bashrc` ]; then
             sed -i.bak -e '$a\' $HOME/.bashrc
         fi
-        echo "export ODOO_PATH=$path" >> $HOME/.bashrc
+        echo "export ODOO_PATH=$correct_path" >> $HOME/.bashrc
         echo "export ODOO_SCRIPTS=$loc" >> $HOME/.bashrc
         source $HOME/.bashrc &>/dev/null
     else
