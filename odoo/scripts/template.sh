@@ -19,8 +19,6 @@ if [[ `db_exists $2` = true ]]; then
     exit 1
 fi
 
-info "Creating $2 database based on $1 database..."
-createdb -T $1 $2
 if [[ -d $HOME/.local/share/Odoo/filestore/$1 ]]; then
     info "There is a filestore linked to the database $1."
     if [[ `confirm "Do you wish to copy the filestore?"` = true ]]; then
@@ -33,5 +31,8 @@ if [[ -d $HOME/.local/share/Odoo/filestore/$1 ]]; then
 else
     warning "Not copying the filestore since the filestore of the database $1 does not exist"
 fi
+
+info "Creating $2 database based on $1 database..."
+createdb -T $1 $2
 
 complete
