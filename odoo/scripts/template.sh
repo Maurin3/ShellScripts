@@ -22,7 +22,9 @@ fi
 if [[ -d $HOME/.local/share/Odoo/filestore/$1 ]]; then
     info "There is a filestore linked to the database $1."
     if [[ `confirm "Do you wish to copy the filestore?"` = true ]]; then
-        mkdir $HOME/.local/share/Odoo/filestore/$2
+        if [[ ! -d $HOME/.local/share/Odoo/filestore/$2 ]]; then
+            mkdir $HOME/.local/share/Odoo/filestore/$2
+        fi
         cp -r $HOME/.local/share/Odoo/filestore/$1/* $HOME/.local/share/Odoo/filestore/$2
         info "Filestore copied"
     else
@@ -33,6 +35,7 @@ else
 fi
 
 info "Creating $2 database based on $1 database..."
-createdb -T $1 $2
+createdb -T $1 $2 &> /dev/null
+exit_on_error "There is an issue while creating the database. Make sure the database $1 is not running."
 
 complete
