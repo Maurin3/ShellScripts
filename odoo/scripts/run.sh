@@ -42,6 +42,10 @@ sql="SELECT latest_version FROM ir_module_module WHERE name='base'"
 version=`psql -t -A -c "$sql" $1 2> /dev/null`
 version=${version%.*.*}
 
+if [[ $version == *"saas"* ]]; then
+    version=${version#saas~}
+    version="saas-${version}"
+fi
 
 if [[ $branch != $version && -n $version ]]; then
     error "The versions between Odoo and the database are not the same. (Branch: $branch - Database: $version)"
