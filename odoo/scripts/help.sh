@@ -8,7 +8,7 @@ info "Usage: $1 [option...] {clean|create|deploy|download|list|migration|remove|
 echo
 aligned "  cl, clean <dbname>                   Clean db, reset admin user (admin/admin), deactivate crons"
 aligned "  cr, create <dbname>                  Create a new db with dbname as name "
-aligned "  dp, deploy <module> <dbname>         Deploy the module in the database "
+aligned "  dp, deploy <dbname> <module>         Deploy the module in the database "
 aligned "  ls, list                             List databases"
 aligned "  mig, migration                       Create a symbolic link between the saas-migration and the base module "
 aligned "  rm, remove <dbname>                  Remove the database with name dbname and its possible filestore "

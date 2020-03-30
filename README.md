@@ -40,7 +40,7 @@ The following commands are prefixed with `odoo`. Only arguments in brackets `(<a
 | `--help`                               | `-h`    | Display help                                                            |
 | `clean <dbname>`                       | `cl`    | Clean db, reset admin user (admin/admin), deactivate crons              |
 | `create <dbname>`                      | `cr`    | Create a new db with dbname as name                                     |
-| `deploy <module> <dbname>`             | `dp`    | Deploy a module to an existing local database                           |
+| `deploy <dbname> <module>`             | `dp`    | Deploy a module to an existing local database                           |
 | `list`                                 | `ls`    | Create a symbolic link between the saas-migration and the base module   |
 | `migration`                            | `mig`   | List databases                                                          |
 | `remove <dbname>`                      | `rm`    | Remove the database with name dbname and its possible filestore         |
