@@ -51,9 +51,13 @@ elif [[ "$type" == "zip" ]]; then
 
     fs_dir=$HOME/.local/share/Odoo/filestore
     if [[ -d ./filestore ]]; then
-        info "Filestore detected, installing to $fs_dir/$1/..."
-        cp -r ./filestore/* $fs_dir/$1
-        exit_on_error "Error while copying filestore directory to $fs_dir/$1/"
+        if find ./filestore -mindepth 1 | read; then
+            info "Filestore detected, installing to $fs_dir/$1/..."
+            cp -r ./filestore/* $fs_dir/$1
+            exit_on_error "Error while copying filestore directory to $fs_dir/$1/"
+        else
+            info "Filestore not detected, no copy done..."
+        fi
     fi
 
     info "Restoring SQL dump to database $1..."
