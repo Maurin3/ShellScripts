@@ -43,7 +43,7 @@ version=`psql -t -A -c "$sql" $1 2> /dev/null`
 version=${version%.*.*}
 
 if [[ $version == *"saas"* ]]; then
-    version=${version#saas~}
+    version=${version#*.saas~}
     version="saas-${version}"
 fi
 
