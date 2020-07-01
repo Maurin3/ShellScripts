@@ -81,16 +81,16 @@ function complete() {
 
 # Ask for a string from the user
 function ask() {
-  msg=$1
+    msg=$1
 
-  if [[ -z "$msg" ]]; then
-    msg="Login:"
-  fi
+    if [[ -z "$msg" ]]; then
+        msg="Login:"
+    fi
 
-  msg="`question $msg`"
-  read -p "$msg " answer
+    msg="`question $msg`"
+    read -p "$msg " answer
 
-  echo "$answer"
+    echo "$answer"
 }
 
 function db_exists() {
