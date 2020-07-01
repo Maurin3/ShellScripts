@@ -53,8 +53,12 @@ if [[ $branch != $version && -n $version ]]; then
 fi
 
 info "Launching Odoo on port $free_port"
+addons_list="$ODOO_PATH/odoo/addons,$ODOO_PATH/enterprise,$ODOO_PATH/design-themes"
 if [[ -f $ODOO_PATH/odoo/odoo-bin ]]; then 
     odoo_command=$ODOO_PATH/odoo/odoo-bin
+    if [[ -d $ODOO_PATH/odoo_utils ]]; then
+        addons_list="${addons_list},$ODOO_PATH/odoo_utils"
+    fi
 else
     odoo_command=$ODOO_PATH/odoo/odoo.py
 fi
@@ -63,12 +67,6 @@ if [[ $check_version -lt 11 ]]; then
     port="--xmlrpc-port $free_port"
 else
     port="--http-port $free_port"
-fi
-
-addons_list="$ODOO_PATH/odoo/addons,$ODOO_PATH/enterprise,$ODOO_PATH/design-themes"
-
-if [[ -d $ODOO_PATH/odoo_utils ]]; then
-    addons_list="${addons_list},$ODOO_PATH/odoo_utils"
 fi
 
 if [[ $addons ]]; then
