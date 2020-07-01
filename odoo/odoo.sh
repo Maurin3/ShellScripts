@@ -29,7 +29,7 @@ case $1 in
         $sdir/list.sh
         ;;
     migration|mig)
-        $sdir/migration.sh
+        $sdir/migration.sh $args
         ;;
     restore|rs)
         $sdir/restore.sh $args
