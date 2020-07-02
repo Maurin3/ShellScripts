@@ -35,18 +35,22 @@ cd odoo
 
 The following commands are prefixed with `odoo`. Only arguments in brackets `(<arg>)` are optional and can be omitted.
 
-| Command                                | Aliases | Description                                                             |
-|----------------------------------------|---------|-------------------------------------------------------------------------|
-| `--help`                               | `-h`    | Display help                                                            |
-| `clean <dbname>`                       | `cl`    | Clean db, reset admin user (admin/admin), deactivate crons              |
-| `create <dbname>`                      | `cr`    | Create a new db with dbname as name                                     |
-| `deploy <dbname> <module>`             | `dp`    | Deploy a module to an existing local database                           |
-| `list`                                 | `ls`    | Create a symbolic link between the saas-migration and the base module   |
-| `migration`                            | `mig`   | List databases                                                          |
-| `remove <dbname>`                      | `rm`    | Remove the database with name dbname and its possible filestore         |
-| `reset`                                | `res`   | Reset the current branch of Odoo repositories                           |
-| `restore <database> <dump file>`       | `rs`    | Restore db with dumpfile                                                |
-| `run <dbname> (<dir>) (<options>)`     | `rn`    | Run Odoo with db (dbname) and dir as added addons (+options)            |
-| `shell <dbname> (<dir>) (<options>)`   | `sh`    | Run Odoo as shell with db (dbname) and dir as added addons (+options)   |
-| `version (<number>)`                   | `vs`    | Display the version or change to the version desired                    |
-| `template <dbname1> <dbname2>`         | `tpl`   | Copy a dbname2 from dbname1                                             |
+| Command                                                    | Aliases      | Description                                                                   |
+|------------------------------------------------------------|--------------|-------------------------------------------------------------------------------|
+| `--help`                                                   | `-h`         | Display help                                                                  |
+| `clean <dbname>`                                           | `cl`         | Clean db, reset admin user (admin/admin), deactivate crons                    |
+| `create <dbname>`                                          | `cr`         | Create a new db with dbname as name                                           |
+| `deploy <dbname> <module>`                                 | `dp`         | Deploy a module to an existing local database                                 |
+| `list`                                                     | `ls`         | List databases                                                                |
+| `migration`                                                | `mig`        | Create a symbolic link between the saas-migration and the base module         |
+| `migration shell <dbname> (<dir>) (<options>)`             | `mig sh`     | Run a 2nd Odoo as shell with db (dbname) and dir as added addons (+options)   |
+| `migration run <dbname> (<dir>) (<options>)`               | `mig rn`     | Run a 2nd Odoo with db (dbname) and dir as added addons (+options)            |
+| `migration reset <dbname> (<dir>) (<options>)`             | `mig rs`     | Reset the current branch of 2nd Odoo repositories                             |
+| `migration version (<number>)`                             | `mig vs`     | Display the version or change to the version desired of 2nd Odoo repositories |
+| `remove <dbname>`                                          | `rm`         | Remove the database with name dbname and its possible filestore               |
+| `reset`                                                    | `res`        | Reset the current branch of Odoo repositories                                 |
+| `restore <database> <dump file>`                           | `rs`         | Restore db with dumpfile                                                      |
+| `run <dbname> (<dir>) (<options>)`                         | `rn`         | Run Odoo with db (dbname) and dir as added addons (+options)                  |
+| `shell <dbname> (<dir>) (<options>)`                       | `sh`         | Run Odoo as shell with db (dbname) and dir as added addons (+options)         |
+| `version (<number>)`                                       | `vs`         | Display the version or change to the version desired                          |
+| `template <dbname1> <dbname2>`                             | `tpl`        | Copy a dbname2 from dbname1                                                   |
