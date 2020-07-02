@@ -20,21 +20,14 @@ args="${@:3}"
 
 current_dir=$PWD
 
-port_list=(8069 8089 8099)
-free_port=0
-for port in ${port_list[@]} ; do
-    lines=$(lsof -i:$port | wc -l)
-    if [[ $lines = 0 ]]; then
-        free_port=$port
-        break
-    fi
-done
+free_port=$(check_free_port)
 
 if [[ $free_port = 0 ]]; then
-    error "There is no port available in the list: 8069 8089 8099"
+    error "There is no port available..."
     exit 1
 fi
-cd $ODOO_PATH/odoo
+
+cd $odoo_dir
 branch=$(git symbolic-ref --short HEAD)
 
 cd $current_dir
@@ -53,20 +46,20 @@ if [[ $branch != $version && -n $version ]]; then
 fi
 
 info "Launching Odoo on port $free_port"
-addons_list="$ODOO_PATH/odoo/addons,$ODOO_PATH/enterprise,$ODOO_PATH/design-themes"
-if [[ -f $ODOO_PATH/odoo/odoo-bin ]]; then 
+addons_list="$odoo_dir/addons,$enterprise,$design_themes"
+if [[ -f $odoo_dir/odoo-bin ]]; then 
     odoo_command=$ODOO_PATH/odoo/odoo-bin
     if [[ -d $ODOO_PATH/odoo_utils ]]; then
         addons_list="${addons_list},$ODOO_PATH/odoo_utils"
     fi
 else
-    odoo_command=$ODOO_PATH/odoo/odoo.py
+    odoo_command=$odoo_dir/odoo.py
 fi
 check_version=${version%.*}
 if [[ $check_version -lt 11 ]]; then
-    port="--xmlrpc-port $free_port"
+    port="--xmlrpc-port=$free_port"
 else
-    port="--http-port $free_port"
+    port="--http-port=$free_port"
 fi
 
 if [[ $addons ]]; then

@@ -15,15 +15,7 @@ args="${@:3}"
 
 current_dir=$PWD
 
-port_list=(8069 8089 8099)
-free_port=0
-for port in ${port_list[@]} ; do
-    lines=$(lsof -i:$port | wc -l)
-    if [[ $lines = 0 ]]; then
-        free_port=$port
-        break
-    fi
-done
+free_port= `check_free_port`
 
 if [[ `db_exists $1` != true ]]; then
     error "The database does not exist..."
@@ -31,7 +23,7 @@ if [[ `db_exists $1` != true ]]; then
 fi
 
 if [[ $free_port = 0 ]]; then
-    error "There is no port available in the list: 8069 8089 8099"
+    error "There is no port available..."
     exit 1
 fi
 

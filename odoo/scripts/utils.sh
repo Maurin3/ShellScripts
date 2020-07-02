@@ -120,3 +120,16 @@ function is_running() {
         echo false
     fi
 }
+
+function check_free_port(){
+    port_list=(8069 8079 8089 8099 9069 9079 9089 9099)
+    free_port=0
+    for port in ${port_list[@]} ; do
+        lines=$(lsof -i:$port | wc -l)
+        if [[ $lines = 0 ]]; then
+            free_port=$port
+            break
+        fi
+    done
+    echo "$free_port"
+}
