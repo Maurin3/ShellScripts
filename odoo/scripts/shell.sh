@@ -15,7 +15,7 @@ args="${@:3}"
 
 current_dir=$PWD
 
-free_port= `check_free_port`
+free_port=$(check_free_port)
 
 if [[ `db_exists $1` != true ]]; then
     error "The database does not exist..."
@@ -27,7 +27,35 @@ if [[ $free_port = 0 ]]; then
     exit 1
 fi
 
-cd $ODOO_PATH/odoo
+if [[ $is_from_mig = 0 ]]; then
+    odoo_dir=$ODOO_PATH/odoo
+    enterprise=$ODOO_PATH/enterprise
+    design_themes=$ODOO_PATH/design-themes
+else
+    odoo_dir=$ODOO_PATH/odoo2
+    if [[ ! -d $ODOO_PATH/odoo2 ]]; then
+        warning "2nd Repository of Odoo Community doesn't exist..."
+        warning "Clone a 2nd time Odoo Community repository by naming it 'odoo2' on the same level as the 1st."
+        info "The command is : git clone git@github.com:odoo/odoo.git odoo2"
+        exit 1
+    fi
+    enterprise=$ODOO_PATH/enterprise2
+    if [[ ! -d $ODOO_PATH/enterprise2 ]]; then
+        warning "2nd Repository of Odoo Enterprise doesn't exist..."
+        warning "Clone a 2nd time Odoo Enterprise repository by naming it 'enterprise2' on the same level as the 1st."
+        info "The command is : git clone git@github.com:odoo/enterprise.git enterprise2"
+        exit 1
+    fi
+    design_themes=$ODOO_PATH/design-themes2
+    if [[ ! -d $ODOO_PATH/design-themes2 ]]; then
+        warning "2nd Repository of Odoo Themes doesn't exist..."
+        warning "Clone a 2nd time Odoo Themes repository by naming it 'design-themes2' on the same level as the 1st."
+        info "The command is : git clone git@github.com:odoo/design-themes.git design-themes2"
+        exit 1
+    fi
+fi
+
+cd $odoo_dir
 branch=$(git symbolic-ref --short HEAD)
 
 cd $current_dir
@@ -46,21 +74,26 @@ if [[ $branch != $version ]]; then
 fi
 
 info "Launching Odoo on port $free_port"
-if [[ -f $ODOO_PATH/odoo/odoo-bin ]]; then 
-    odoo_command=$ODOO_PATH/odoo/odoo-bin
+addons_list="$odoo_dir/addons,$enterprise,$design_themes"
+if [[ -f $odoo_dir/odoo-bin ]]; then 
+    odoo_command=$odoo_dir/odoo-bin
+    if [[ -d $ODOO_PATH/odoo_utils ]]; then
+        addons_list="${addons_list},$ODOO_PATH/odoo_utils"
+    fi
 else
-    odoo_command=$ODOO_PATH/odoo/odoo.py
+    odoo_command=$odoo_dir/odoo.py
 fi
 check_version=${version%.*}
 if [[ $check_version -lt 11 ]]; then
-    port="--xmlrpc-port $free_port"
+    port="--xmlrpc-port=$free_port"
 else
-    port="--http-port $free_port"
+    port="--http-port=$free_port"
 fi
+
 if [[ $addons ]]; then
-    $odoo_command shell --addons-path=$ODOO_PATH/odoo/addons,$ODOO_PATH/enterprise,$ODOO_PATH/design-themes,$addons $port -d $1 --db-filter=$1 $args
-else
-    $odoo_command shell --addons-path=$ODOO_PATH/odoo/addons,$ODOO_PATH/enterprise,$ODOO_PATH/design-themes $port -d $1 --db-filter=$1 $args
+    addons_list="${addons_list},$addons"
 fi
+
+$odoo_command shell --addons-path=$addons_list $port -d $1 --db-filter=$1 $args
 
 complete

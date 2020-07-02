@@ -4,9 +4,33 @@ DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 source "$DIR/utils.sh"
 
-odoo_dir=$ODOO_PATH/odoo
-enterprise=$ODOO_PATH/enterprise
-design_themes=$ODOO_PATH/design-themes
+if [[ $is_from_mig = 0 ]]; then
+    odoo_dir=$ODOO_PATH/odoo
+    enterprise=$ODOO_PATH/enterprise
+    design_themes=$ODOO_PATH/design-themes
+else
+    odoo_dir=$ODOO_PATH/odoo2
+    if [[ ! -d $ODOO_PATH/odoo2 ]]; then
+        warning "2nd Repository of Odoo Community doesn't exist..."
+        warning "Clone a 2nd time Odoo Community repository by naming it 'odoo2' on the same level as the 1st."
+        info "The command is : git clone git@github.com:odoo/odoo.git odoo2"
+        exit 1
+    fi
+    enterprise=$ODOO_PATH/enterprise2
+    if [[ ! -d $ODOO_PATH/enterprise2 ]]; then
+        warning "2nd Repository of Odoo Enterprise doesn't exist..."
+        warning "Clone a 2nd time Odoo Enterprise repository by naming it 'enterprise2' on the same level as the 1st."
+        info "The command is : git clone git@github.com:odoo/enterprise.git enterprise2"
+        exit 1
+    fi
+    design_themes=$ODOO_PATH/design-themes2
+    if [[ ! -d $ODOO_PATH/design-themes2 ]]; then
+        warning "2nd Repository of Odoo Themes doesn't exist..."
+        warning "Clone a 2nd time Odoo Themes repository by naming it 'design-themes2' on the same level as the 1st."
+        info "The command is : git clone git@github.com:odoo/design-themes.git design-themes2"
+        exit 1
+    fi
+fi
 
 if [[ `db_exists $1` != true ]]; then
     error "The database does not exist..."
@@ -48,7 +72,7 @@ fi
 info "Launching Odoo on port $free_port"
 addons_list="$odoo_dir/addons,$enterprise,$design_themes"
 if [[ -f $odoo_dir/odoo-bin ]]; then 
-    odoo_command=$ODOO_PATH/odoo/odoo-bin
+    odoo_command=$odoo_dir/odoo-bin
     if [[ -d $ODOO_PATH/odoo_utils ]]; then
         addons_list="${addons_list},$ODOO_PATH/odoo_utils"
     fi

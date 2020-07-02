@@ -11,8 +11,20 @@ if [[ $# -gt 1 ]]; then
     exit 1
 fi
 
+if [[ $is_from_mig = 0 ]]; then
+    odoo_dir=$ODOO_PATH/odoo
+    enterprise=$ODOO_PATH/enterprise
+    design_themes=$ODOO_PATH/design-themes
+else
+    odoo_dir=$ODOO_PATH/odoo2
+    enterprise=$ODOO_PATH/enterprise2
+    design_themes=$ODOO_PATH/design-themes2
+fi
 
-cd $ODOO_PATH/odoo
+echo $odoo_dir
+
+cd $odoo_dir
+
 if [[ $# = 0 ]]; then
     branch=$(git symbolic-ref --short HEAD)
     info "Odoo version: $branch"
@@ -31,7 +43,8 @@ git pull -q
 git clean -dfxq
 branch=$(git symbolic-ref --short HEAD)
 info "Odoo Community version is now $branch"
-cd ../enterprise
+
+cd $enterprise
 
 if [[ `check_changes` == false ]]; then
     error "Odoo Enterprise : There are uncommited changes... Please reset your branch or stash the changes."
@@ -42,7 +55,8 @@ git pull -q
 git clean -dfxq
 branch=$(git symbolic-ref --short HEAD)
 info "Odoo Enterprise version is now $branch"
-cd ../design-themes
+
+cd $design_themes
 
 if [[ `check_changes` == false ]]; then
     error "Odoo Themes : There are uncommited changes... Please reset your branch or stash the changes."

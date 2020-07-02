@@ -14,6 +14,8 @@ if [[ ! -d "$ODOO_PATH" ]]; then ODOO_PATH="$HOME/Documents/Odoo"; fi
 
 args=${@:2}
 
+export is_from_mig=0
+
 # Main
 case $1 in
     -h|--help)

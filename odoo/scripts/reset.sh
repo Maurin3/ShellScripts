@@ -10,7 +10,18 @@ if [[ $# -gt 0 ]]; then
     exit 1
 fi
 
-cd $ODOO_PATH/odoo
+if [[ $is_from_mig = 0 ]]; then
+    odoo_dir=$ODOO_PATH/odoo
+    enterprise=$ODOO_PATH/enterprise
+    design_themes=$ODOO_PATH/design-themes
+else
+    odoo_dir=$ODOO_PATH/odoo2
+    enterprise=$ODOO_PATH/enterprise2
+    design_themes=$ODOO_PATH/design-themes2
+fi
+
+
+cd $odoo_dir
 if [[ `check_changes` == true ]]; then
     info "No changes in Odoo repository"
 else
@@ -19,7 +30,7 @@ else
     info "Odoo repository has been reset"
 fi
 
-cd $ODOO_PATH/enterprise
+cd $enterprise
 if [[ `check_changes` == true ]]; then
     info "No changes in Odoo Enterprise repository"
 else
@@ -28,7 +39,7 @@ else
     info "Odoo Enterprise repository has been reset"
 fi
 
-cd $ODOO_PATH/design-themes
+cd $design_themes
 if [[ `check_changes` == true ]]; then
     info "No changes in Odoo Themes repository"
 else
