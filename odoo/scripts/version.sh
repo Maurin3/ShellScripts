@@ -21,8 +21,6 @@ else
     design_themes=$ODOO_PATH/design-themes2
 fi
 
-echo $odoo_dir
-
 cd $odoo_dir
 
 if [[ $# = 0 ]]; then
