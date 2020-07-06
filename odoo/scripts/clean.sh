@@ -4,6 +4,11 @@ DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 source "$DIR/utils.sh"
 
+if [[ ! $1 || $2 ]]; then
+    error "Illegal number of parameters"
+    exit 1
+fi
+
 if [[ `db_exists $1` == false ]]; then
     error "The database does not exist..."
     exit 1
