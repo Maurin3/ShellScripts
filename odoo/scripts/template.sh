@@ -25,8 +25,12 @@ if [[ -d $HOME/.local/share/Odoo/filestore/$1 ]]; then
         if [[ ! -d $HOME/.local/share/Odoo/filestore/$2 ]]; then
             mkdir $HOME/.local/share/Odoo/filestore/$2
         fi
-        cp -r $HOME/.local/share/Odoo/filestore/$1/* $HOME/.local/share/Odoo/filestore/$2
-        info "Filestore copied"
+        if find $HOME/.local/share/Odoo/filestore/$1/ -mindepth 1 | read; then
+            cp -r $HOME/.local/share/Odoo/filestore/$1/* $HOME/.local/share/Odoo/filestore/$2
+            info "Filestore copied"
+        else
+            info "Filestore not detected, no copy done..."
+        fi
     else
         warning "Not copying the filestore (User's will)."
     fi
