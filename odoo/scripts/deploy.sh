@@ -26,7 +26,13 @@ if [[ ! $2 ]]; then
     exit 1
 else
     info "Deploying module to Odoo on database $1"
-    $ODOO_PATH/odoo/odoo-bin deploy $2 --db $1
+    odoo_dir=$ODOO_PATH/odoo
+    if [[ -f $odoo_dir/odoo-bin ]]; then 
+        odoo_command=$odoo_dir/odoo-bin
+    else
+        odoo_command=$odoo_dir/odoo.py
+    fi
+    $odoo_command deploy $2 --db $1
 fi
 
 complete
