@@ -60,6 +60,9 @@ case $1 in
     template|tpl)
         $sdir/template.sh $args
         ;;
+    kill|stop)
+        $sdir/kill.sh $args
+        ;;
     *)
         error "Unrecognized command: $0 $1"
         ;;
