@@ -112,15 +112,6 @@ function check_changes() {
     fi
 }
 
-function is_running() {
-    pid=`ps aux | grep -E "odoo-bin.*-d\s$1" | awk '{print $2}'`
-    if [[ -n "$pid" ]]; then
-        echo "$pid"
-    else
-        echo false
-    fi
-}
-
 function check_free_port(){
     port_list=(8069 8079 8089 8099 9069 9079 9089 9099)
     free_port=0
