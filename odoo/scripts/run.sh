@@ -90,4 +90,4 @@ if [[ $addons ]]; then
     addons_list="${addons_list},$addons"
 fi
 
-$odoo_command --addons-path=$addons_list $port -d $1 --db-filter=$1 $args --limit-time-cpu=10000000 --limit-time-real=1000000
+$odoo_command --addons-path=$addons_list $port -d $1 --db-filter=^$1$ $args --limit-time-cpu=10000000 --limit-time-real=1000000
