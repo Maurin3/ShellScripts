@@ -94,6 +94,6 @@ if [[ $addons ]]; then
     addons_list="${addons_list},$addons"
 fi
 
-$odoo_command shell --addons-path=$addons_list $port -d $1 --db-filter=$1 $args
+$odoo_command shell --addons-path=$addons_list $port -d $1 --db-filter=^$1$ $args
 
 complete
