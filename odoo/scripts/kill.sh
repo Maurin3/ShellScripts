@@ -14,7 +14,7 @@ if [[ `db_exists $1` != true ]]; then
     exit 1
 fi
 
-pid=`ps aux | grep -E "*.*odoo(-bin|.py).*\s-d\s$1\s--db-filter=^$1$\s.*" | awk '{print $2}'`
+pid=`ps aux | grep -E "*.*odoo(-bin|.py).*\s-d\s$1\s.*" | awk '{print $2}'`
 
 if [[ -n "$pid" ]]; then
     kill -s SIGINT $pid
