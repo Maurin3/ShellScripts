@@ -49,10 +49,16 @@ elif [[ "$type" == "zip" ]]; then
         exit 1
     fi
 
-    fs_dir=$HOME/.local/share/Odoo/filestore
     if [[ -d ./filestore ]]; then
         if find ./filestore -mindepth 1 | read; then
-            info "Filestore detected, installing to $fs_dir/$1/..."
+            cd filestore
+            nb_elements=$(ls -A | wc -l)
+            cd ..
+            if  [[ ! -d $HOME/.local/share/Odoo/filestore/$1 ]]; then
+                mkdir $HOME/.local/share/Odoo/filestore/$1
+            fi
+            fs_dir=$HOME/.local/share/Odoo/filestore
+            info "Filestore detected ($nb_elements elements inside), installing to $fs_dir/$1/..."
             cp -r ./filestore/* $fs_dir/$1
             exit_on_error "Error while copying filestore directory to $fs_dir/$1/"
         else

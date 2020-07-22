@@ -19,20 +19,28 @@ if [[ `db_exists $2` = true ]]; then
     exit 1
 fi
 
+cur_dir=$(pwd)
+
 if [[ -d $HOME/.local/share/Odoo/filestore/$1 ]]; then
-    info "There is a filestore linked to the database $1."
-    if [[ `confirm "Do you wish to copy the filestore?"` = true ]]; then
+    cd $HOME/.local/share/Odoo/filestore/$1
+    nb_elements=$(ls -A | wc -l)
+    cd $cur_dir
+    if [ $nb_elements -lt 100 ]; then
         if [[ ! -d $HOME/.local/share/Odoo/filestore/$2 ]]; then
             mkdir $HOME/.local/share/Odoo/filestore/$2
         fi
-        if find $HOME/.local/share/Odoo/filestore/$1/ -mindepth 1 | read; then
+        cp -r $HOME/.local/share/Odoo/filestore/$1/* $HOME/.local/share/Odoo/filestore/$2
+    else
+        info "There is a filestore linked to the database $1 ($nb_elements elements inside)."
+        if [[ `confirm "Do you wish to copy the filestore?"` = true ]]; then
+            if [[ ! -d $HOME/.local/share/Odoo/filestore/$2 ]]; then
+                mkdir $HOME/.local/share/Odoo/filestore/$2
+            fi
             cp -r $HOME/.local/share/Odoo/filestore/$1/* $HOME/.local/share/Odoo/filestore/$2
             info "Filestore copied"
         else
-            info "Filestore not detected, no copy done..."
+            warning "Not copying the filestore (User's will)."
         fi
-    else
-        warning "Not copying the filestore (User's will)."
     fi
 else
     warning "Not copying the filestore since the filestore of the database $1 does not exist"

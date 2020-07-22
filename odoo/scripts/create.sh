@@ -15,6 +15,5 @@ if [[ `db_exists $1` == true ]]; then
 fi
 
 createdb $1
-mkdir $HOME/.local/share/Odoo/filestore/$1
 
 complete
