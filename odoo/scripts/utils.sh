@@ -2,44 +2,66 @@
 
 # Colors codes
 NC="\033[0m"
+LIGHT_GREEN="\033[38;5;106m"
+RED="\033[38;5;160m"
 
-WHITE="\033[1;37m"
-BLACK="\033[0;30m"
-BLUE="\033[0;34m"
-LIGHT_BLUE="\033[1;34m"
-GREEN="\033[0;32m"
-LIGHT_GREEN="\033[1;32m"
-CYAN="\033[0;36m"
-LIGHT_CYAN="\033[1;36m"
-RED="\033[0;31m"
-LIGHT_RED="\033[1;31m"
-PURPLE="\033[0;35m"
-LIGHT_PURPLE="\033[1;35m"
-YELLOW="\033[1;33m"
-ORANGE="\033[0;33m"
-GRAY="\033[0;30m"
-LIGHT_GRAY="\033[0;37m"
+declare -A clr
+clr=(
+    [warning]="\033[38;5;208m"
+    [error]="\033[38;5;160m"
+    [info]="\033[38;5;106m"
+    [question]="\033[38;5;039m"
+)
 
-# Layout messages
+declare -A sym
+sym=(
+    [warning]="!"
+    [error]="!"
+    [info]="i"
+    [question]="?"
+)
+
+declare -A modes
+modes=(
+    [norm]="\033[0m"
+    [bold]="\033[1m"
+)
+
+function success() {
+    echo "`message success ${@:1}`"
+}
+
+# Prints a warning message
 function warning() {
-    echo -e "${ORANGE}[!]${NC} ${@:1}"
+    echo "`message warning ${@:1}`"
 }
 
-function info() {
-    echo -e "${LIGHT_GREEN}[i]${NC} ${@:1}"
-}
-
+# Prints an error message
 function error() {
-    echo -e "${LIGHT_RED}[!]${NC} ${@:1}"
+    echo "`message error ${@:1}`"
 }
 
+# Prints an informative message
+function info() {
+    echo "`message info ${@:1}`"
+}
+
+# Asks a question
 function question() {
-    echo -e "${LIGHT_BLUE}[?]${NC} ${@:1}"
+    echo "`message question ${@:1}`"
 }
 
 # Prints a string prefixed with tabs
 function aligned() {
-  echo -e "    ${@:1}"
+    echo -e "    ${@:1}"
+}
+
+function message() {
+    if [[ -n $1 && -n $2 ]]; then
+        echo -e "${modes[bold]}${clr[$1]}[${sym[$1]}]${modes[norm]} ${@:2}"
+    else
+        echo "Invalid use of \`message()\`"
+    fi
 }
 
 function confirm() {
