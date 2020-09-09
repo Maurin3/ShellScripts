@@ -30,10 +30,10 @@ function create_symlink() {
     info "Creating symbolic link..."
 
     if [ ! $MIG_SCRIPTS ]; then
-        MIG_SCRIPTS=$ODOO_PATH/saas-migration
+        MIG_SCRIPTS=$ODOO_PATH/upgrade
     fi
 
-    # $MIG_SCRIPTS=saas-migration repo
+    # $MIG_SCRIPTS=upgrade repo
     ln -s $MIG_SCRIPTS/migrations/* $ODOO_PATH/odoo/odoo/addons/base/maintenance
 
     cd ${current_dir}
