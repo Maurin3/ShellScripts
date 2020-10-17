@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 
-DIR="${BASH_SOURCE%/*}"
+DIR="$ODOO_SCRIPTS"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 sdir="$DIR/scripts"
 source "$sdir/utils.sh"
 
 # Variables
-dir="$ODOO_SCRIPTS"
-if [[ ! -d "$dir" ]]; then dir="$PWD"; fi
-
 ODOO_PATH="$ODOO_PATH"
 if [[ ! -d "$ODOO_PATH" ]]; then ODOO_PATH="$HOME/Documents/Odoo"; fi
 
