@@ -40,18 +40,13 @@ if [ -n `$SHELL -c 'echo $ZSH_VERSION'` ]; then
         sed -i.bak -e "/ODOO_PATH=.*/d" $HOME/.zshrc
         sed -i.bak -e "/ODOO_SCRIPTS=.*/d" $HOME/.zshrc
         source $HOME/.zshrc &>/dev/null
-    else
-        error "ODOO_PATH and ODOO_SCRIPTS are not present in your ~/.zshrc file"
-        exit 1
     fi
-elif [ -n `$SHELL -c 'echo $BASH_VERSION'` ]; then
+fi
+if [ -n `$SHELL -c 'echo $BASH_VERSION'` ]; then
     if [ `grep -wc "ODOO_SCRIPTS" $HOME/.bashrc` = 1 ]; then
-        sed -ie "#(ODOO_PATH=).*#d" $HOME/.bashrc
-        sed -ie "#(ODOO_SCRIPTS=).*#d" $HOME/.bashrc
+        sed -ie "/ODOO_PATH=.*/d" $HOME/.bashrc
+        sed -ie "/ODOO_SCRIPTS=.*/d" $HOME/.bashrc
         source $HOME/.bashrc &>/dev/null
-    else
-        error "ODOO_PATH and ODOO_SCRIPTS are not present in your ~/.bashrc file"
-        exit 1
     fi
 fi
 

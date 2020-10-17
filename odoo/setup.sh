@@ -4,6 +4,16 @@ DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 source "$DIR/scripts/utils.sh"
 
+warning "Make sure you chenged your preferred shell before running this script."
+aligned "You can change your preferred shell by doing 'chsh -s path/to/shell' in your terminal."
+info "Bash is located in '/bin/bash' and is the default one."
+info "Zsh is located in '/usr/bin/zsh' and isn't installed by default."
+warning "You need to log out then back in to see the changes take effect."
+
+if [[ `confirm "Do you want to continue?"` != true ]]; then
+    exit 1
+fi
+
 info "Setting up the local path to Odoo..."
 warning "The software you are about to install assumes that you have cloned the Odoo repositories locally on your system"
 aligned "using GIT and that those directories are located next to each other in your filesystem."
@@ -59,11 +69,12 @@ fi
 
 # Done!
 info "All good"
-echo # new line
-warning "Make sure the variables ODOO_PATH and ODOO_SCRIPTS are your ~/.bashrc or ~/.zshrc file before using the scripts, or simply re-open your terminal,"
-aligned "then run 'odoo version' to verify the scripts are working as expected"
 
-if [ -n `$SHELL -c 'echo $ZSH_VERSION'` ]; then
+s="'$SHELL'"
+# Remove the quotes
+shell_type=${s##*/}
+
+if [[ $shell_type  == 'zsh' ]]; then
     if [ `grep -wc "ODOO_SCRIPTS" $HOME/.zshrc` = 0 ]; then
         if [ ! -z `tail -c 1 $HOME/.zshrc` ]; then
             sed -i.bak -e '$a\' $HOME/.zshrc
@@ -75,7 +86,7 @@ if [ -n `$SHELL -c 'echo $ZSH_VERSION'` ]; then
         error "ODOO_PATH and ODOO_SCRIPTS are already present in your ~/.zshrc file"
         exit 1
     fi
-elif [ -n `$SHELL -c 'echo $BASH_VERSION'` ]; then
+elif [[ $shell_type  == 'bash' ]]; then
     if [ `grep -wc "ODOO_SCRIPTS" $HOME/.bashrc` = 0 ]; then
         if [ ! -z `tail -c 1 $HOME/.bashrc` ]; then
             sed -i.bak -e '$a\' $HOME/.bashrc
@@ -88,5 +99,9 @@ elif [ -n `$SHELL -c 'echo $BASH_VERSION'` ]; then
         exit 1
     fi
 fi
+
+echo # new line
+warning "Make sure the variables ODOO_PATH and ODOO_SCRIPTS are your ~/.bashrc or ~/.zshrc file before using the scripts, or simply re-open your terminal,"
+aligned "then run 'odoo version' to verify the scripts are working as expected"
 
 complete
