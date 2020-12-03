@@ -17,6 +17,9 @@ fi
 sql="select id from res_users where active=true order by id limit 1"
 id=$(psql -X -A -t -q -c "$sql" -d $1)
 
+sql="select partner_id from res_users where id=$id"
+partner_id=$(psql -X -A -t -q -c "$sql" -d $1)
+
 info "Deactivating crons."
 sql="update ir_cron set active='False';"
 psql -c "$sql" -d $1 &> /dev/null
@@ -34,6 +37,11 @@ exit_on_error "Error while running SQL command to deativate the fetch of mails"
 sql="delete from ir_mail_server;"
 psql -c "$sql" -d $1 &> /dev/null
 exit_on_error "Error while running SQL command to deativate the sending of mails"
+
+info "Changing language for the administrator to English in database $1."
+sql="update res_partner set lang = null where id=$partner_id;"
+psql -c "$sql" -d $1 &> /dev/null
+exit_on_error "Error while running SQL command to reset admin language"
 
 now=`date -d "next year" +"%Y-%m-%d %T"`
 sql="update ir_config_parameter set value = '$now' where key = 'database.expiration_date';"
