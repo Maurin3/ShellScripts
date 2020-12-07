@@ -28,6 +28,17 @@ function create_symlink() {
     complete
 }
 
+function pull() {
+    info "Retrieving changes from Upgrade repository"
+    if [ ! $MIG_SCRIPTS ]; then
+        MIG_SCRIPTS=$ODOO_PATH/upgrade
+    fi
+
+    git -C $MIG_SCRIPTS pull --prune -q
+
+    complete
+}
+
 is_from_mig=1
 
 args=${@:2}
@@ -35,6 +46,9 @@ args=${@:2}
 case $1 in
     symlink|sym)
         create_symlink
+        ;;
+    pull)
+        pull
         ;;
     run|rn)
         $DIR/run.sh $args
