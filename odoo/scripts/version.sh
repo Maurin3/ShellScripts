@@ -21,50 +21,32 @@ else
     design_themes=$ODOO_PATH/design-themes2
 fi
 
-cd $odoo_dir
-
 if [[ $# = 0 ]]; then
-    branch=$(git symbolic-ref --short HEAD)
+    branch=$(git -C $odoo_dir symbolic-ref --short HEAD)
     info "Odoo version: $branch"
-    cd $current_dir
     exit 0
 fi
 
 info "This operation can take some time. (Odoo Community repository has a great number of commits)"
 
-if [[ `check_changes` == false ]]; then
-    error "Odoo Community : There are uncommited changes... Please reset your branch or stash the changes."
-    exit 1
-fi
-git checkout -q $1
-git pull -q
-git clean -dfxq
-branch=$(git symbolic-ref --short HEAD)
-info "Odoo Community version is now $branch"
+declare -A odoo_table
+odoo_table=(["Themes"]=$design_themes ["Enterprise"]=$enterprise ["Community"]=$odoo_dir)
 
-cd $enterprise
+for edition in "${!odoo_table[@]}"
+do
+    if [[ `check_changes ${odoo_table[$edition]}` == false ]]; then
+        error "Odoo $edition : There are uncommited changes... Please reset your branch or stash the changes."
+        exit 1
+    fi
+done
 
-if [[ `check_changes` == false ]]; then
-    error "Odoo Enterprise : There are uncommited changes... Please reset your branch or stash the changes."
-    exit 1
-fi
-git checkout -q $1
-git pull -q
-git clean -dfxq
-branch=$(git symbolic-ref --short HEAD)
-info "Odoo Enterprise version is now $branch"
-
-cd $design_themes
-
-if [[ `check_changes` == false ]]; then
-    error "Odoo Themes : There are uncommited changes... Please reset your branch or stash the changes."
-    exit 1
-fi
-git checkout -q $1
-git pull -q
-git clean -dfxq
-branch=$(git symbolic-ref --short HEAD)
-info "Odoo Themes is now $branch"
-cd $current_dir
+for edition in "${!odoo_table[@]}"
+do
+    git -C ${odoo_table[$edition]} checkout -q $1
+    git -C ${odoo_table[$edition]} pull --prune -q
+    git -C ${odoo_table[$edition]} clean -dfxq
+    branch=$(git -C ${odoo_table[$edition]} symbolic-ref --short HEAD)
+    info "Odoo $edition version is now $branch"
+done
 
 complete

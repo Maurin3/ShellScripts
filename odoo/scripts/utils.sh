@@ -124,7 +124,8 @@ function db_exists() {
 }
 
 function check_changes() {
-    cmd="git diff-index --quiet HEAD"
+    path=$1
+    cmd="git -C $path diff-index --quiet HEAD"
     $cmd
     status=$?
     if [[ $status == 0 ]]; then

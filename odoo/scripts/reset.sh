@@ -20,34 +20,17 @@ else
     design_themes=$ODOO_PATH/design-themes2
 fi
 
-
-cd $odoo_dir
-if [[ `check_changes` == true ]]; then
-    info "No changes in Odoo repository"
-else
-    git reset -q --hard
-    git clean -dfxq
-    info "Odoo repository has been reset"
-fi
-
-cd $enterprise
-if [[ `check_changes` == true ]]; then
-    info "No changes in Odoo Enterprise repository"
-else
-    git reset -q --hard
-    git clean -dfxq
-    info "Odoo Enterprise repository has been reset"
-fi
-
-cd $design_themes
-if [[ `check_changes` == true ]]; then
-    info "No changes in Odoo Themes repository"
-else
-    git reset -q --hard
-    git clean -dfxq
-    info "Odoo Themes repository has been reset"
-fi
-
-cd $current_dir
+declare -A odoo_table
+odoo_table=(["Themes"]=$design_themes ["Enterprise"]=$enterprise ["Community"]=$odoo_dir)
+for edition in "${!odoo_table[@]}"
+do
+    if [[ `check_changes ${odoo_table[$edition]}` == true ]]; then
+        info "No changes in Odoo $edition repository"
+    else
+        info "Odoo $edition repository has been reset"
+        git -C ${odoo_table[$edition]} reset -q --hard
+        git -C ${odoo_table[$edition]} clean -dfxq
+    fi
+done
 
 complete
