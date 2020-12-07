@@ -5,21 +5,9 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 source "$DIR/utils.sh"
 
 function create_symlink() {
-    info "Creating Symbolic Link from Saas-migration repository to Odoo base add-on"
+    info "Creating Symbolic Link from Upgrade repository to Odoo base add-on"
 
-    current_dir=$PWD
-    t_dir=$ODOO_PATH/odoo/odoo/addons/base/maintenance
     t_link=$ODOO_PATH/odoo/odoo/addons/base/maintenance/util.py
-
-    cd $ODOO_PATH/odoo
-
-    if [[ -d ${t_dir} ]]; then
-        error "Directory already exists..."
-    else
-        warning "Directory doesn't exist..."
-        info "Creating directory..."
-        mkdir $ODOO_PATH/odoo/odoo/addons/base/maintenance
-    fi
 
     if [ -L ${t_link} ]; then
         error "Symbolic link already exists..."
@@ -33,10 +21,9 @@ function create_symlink() {
         MIG_SCRIPTS=$ODOO_PATH/upgrade
     fi
 
-    # $MIG_SCRIPTS=upgrade repo
-    ln -s $MIG_SCRIPTS/migrations/* $ODOO_PATH/odoo/odoo/addons/base/maintenance
-
-    cd ${current_dir}
+    # $MIG_SCRIPTS=upgrade (old saas-migration) repo
+    cd $ODOO_PATH/odoo/odoo/addons/base
+    ln -s $MIG_SCRIPTS $ODOO_PATH/odoo/odoo/addons/base/maintenance
 
     complete
 }
