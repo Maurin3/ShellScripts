@@ -42,10 +42,11 @@ The following commands are prefixed with `odoo`. Only arguments in brackets `(<a
 | `create <dbname>`                                          | `cr`         | Create a new db with dbname as name                                           |
 | `deploy <dbname> <module>`                                 | `dp`         | Deploy a module to an existing local database                                 |
 | `list`                                                     | `ls`         | List databases                                                                |
-| `migration`                                                | `mig`        | Create a symbolic link between the saas-migration and the base module         |
+| `migration symlink`                                        | `mig sym`    | Create a symbolic link between the Upgrade repository and the base module     |
+| `migration pull`                                           | `mig pull`   | Retrieve the changes from the Upgrade repository                              |
 | `migration shell <dbname> (<dir>) (<options>)`             | `mig sh`     | Run a 2nd Odoo as shell with db (dbname) and dir as added addons (+options)   |
 | `migration run <dbname> (<dir>) (<options>)`               | `mig rn`     | Run a 2nd Odoo with db (dbname) and dir as added addons (+options)            |
-| `migration reset <dbname> (<dir>) (<options>)`             | `mig rs`     | Reset the current branch of 2nd Odoo repositories                             |
+| `migration reset <dbname>`                                 | `mig rs`     | Reset the current branch of 2nd Odoo repositories                             |
 | `migration version (<number>)`                             | `mig vs`     | Display the version or change to the version desired of 2nd Odoo repositories |
 | `remove <dbname>`                                          | `rm`         | Remove the database with name dbname and its possible filestore               |
 | `reset`                                                    | `res`        | Reset the current branch of Odoo repositories                                 |
