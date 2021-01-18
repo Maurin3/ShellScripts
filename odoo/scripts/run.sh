@@ -87,6 +87,9 @@ else
 fi
 
 if [[ $addons ]]; then
+    if [[ -d $addons && -d $addons/psbe-internal ]]; then
+        addons_list="${addons_list},$addons/psbe-internal"
+    fi
     addons_list="${addons_list},$addons"
 fi
 
