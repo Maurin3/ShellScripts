@@ -22,12 +22,14 @@ if [ -d "$filestore" ]; then
     if [[ `confirm` != true ]]; then
         warning "Operation aborted by user."
         exit 1
-    fi
-    info "Deleting database $1..."
-    dropdb $1 2>/dev/null
-    exit_on_error "There is an issue while deleting the database. Make sure the database is not running."
+    fi    
     info "Removing the filestore of $1"
     rm -rf $filestore
 fi
+
+info "Deleting database $1..."
+dropdb $1 2>/dev/null
+exit_on_error "There is an issue while deleting the database. Make sure the database is not running."
+
 
 complete
