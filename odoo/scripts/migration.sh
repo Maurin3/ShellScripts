@@ -7,25 +7,26 @@ source "$DIR/utils.sh"
 function create_symlink() {
     info "Creating Symbolic Link from Upgrade repository to Odoo base add-on"
 
-    t_link=$ODOO_PATH/odoo/odoo/addons/base/maintenance/util.py
+    current_dir=$PWD
+
+    t_link=$ODOO_PATH/odoo/odoo/addons/base/maintenance
 
     if [ -L ${t_link} ]; then
         error "Symbolic link already exists..."
-        exit 1
+        warning "Skipping the creation of symbolic link..."
+    else
+        warning "Symbolic link doesn't exist..."
+        info "Creating symbolic link..."
+
+        if [ ! $MIG_SCRIPTS ]; then
+            MIG_SCRIPTS=$ODOO_PATH/upgrade
+        fi
+
+        # $MIG_SCRIPTS=upgrade (old saas-migration) repo
+        cd $ODOO_PATH/odoo/odoo/addons/base
+        ln -s $MIG_SCRIPTS $ODOO_PATH/odoo/odoo/addons/base/maintenance
+        cd $current_dir
     fi
-
-    warning "Symbolic link doesn't exist..."
-    info "Creating symbolic link..."
-
-    if [ ! $MIG_SCRIPTS ]; then
-        MIG_SCRIPTS=$ODOO_PATH/upgrade
-    fi
-
-    # $MIG_SCRIPTS=upgrade (old saas-migration) repo
-    cd $ODOO_PATH/odoo/odoo/addons/base
-    ln -s $MIG_SCRIPTS $ODOO_PATH/odoo/odoo/addons/base/maintenance
-
-    complete
 }
 
 function pull() {
@@ -46,6 +47,7 @@ args=${@:2}
 case $1 in
     symlink|sym)
         create_symlink
+        complete
         ;;
     pull)
         pull
@@ -61,8 +63,5 @@ case $1 in
         ;;
     shell|sh)
         $DIR/shell.sh $args
-        ;;
-    *)
-        error "Unrecognized command: $0 $1"
         ;;
 esac

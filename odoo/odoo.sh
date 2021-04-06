@@ -27,6 +27,9 @@ case $1 in
     list|ls)
         $sdir/list.sh
         ;;
+    upgrade|upg)
+        $sdir/upgrade.sh $args
+        ;;
     migration|mig)
         $sdir/migration.sh $args
         ;;
