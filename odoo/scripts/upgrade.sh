@@ -67,8 +67,8 @@ if [[ $check_version -lt 13 ]]; then
     create_symlink
     upg_path=""
 else
-    std_upg_path=$ODOO_PATH/upgrade
-    custom_upg_path=$ODOO_PATH/psbe-custom-upgrade
+    std_upg_path=$ODOO_PATH/upgrade/migrations
+    custom_upg_path=$ODOO_PATH/psbe-custom-upgrade/migrations
     upg_path="--upgrade-path=${std_upg_path},${custom_upg_path}"
 fi
 
